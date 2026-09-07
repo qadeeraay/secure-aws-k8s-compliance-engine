@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: compliance-workload
+  labels:
+    name: compliance-workload
+    # Enforce strict Kubernetes Pod Security Standards (Restricted Profile)
+    # Satisfies NIST SP 800-53 CM-7, ISO 27002 Control 8.19, SOC 2 CC6.6
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

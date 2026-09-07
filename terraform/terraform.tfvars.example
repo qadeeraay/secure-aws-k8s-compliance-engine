@@ -1,0 +1,20 @@
+# ==============================================================================
+# Sample Terraform Variables Configuration
+# Copy this file to terraform.tfvars to customize your deployment
+# ==============================================================================
+
+aws_region                    = "us-east-1"
+environment                   = "production"
+project_name                  = "compliance-engine"
+use_localstack                = true
+localstack_endpoint           = "http://localhost:4566"
+
+# Network CIDR Blocks
+vpc_cidr                      = "10.100.0.0/16"
+availability_zones            = ["us-east-1a", "us-east-1b"]
+public_subnet_cidrs           = ["10.100.1.0/24", "10.100.2.0/24"]
+private_compute_subnet_cidrs  = ["10.100.10.0/24", "10.100.20.0/24"]
+isolated_database_subnet_cidrs = ["10.100.100.0/24", "10.100.200.0/24"]
+
+# Compliance Log Retention (PCI DSS Req 10.7 & NIST AU-11 mandate >= 365 days)
+log_retention_in_days         = 365

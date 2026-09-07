@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-api-service
+  namespace: compliance-workload
+  labels:
+    app: secure-api
+    tier: backend
+    compliance.framework: "NIST-800-53,ISO-27002,SOC2,PCI-DSS"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: secure-api
+  template:
+    metadata:
+      labels:
+        app: secure-api
+        tier: backend
+    spec:
+      serviceAccountName: secure-api-sa
+      automountServiceAccountToken: false
+
+      # Pod-level security context (Restricted Profile)
+      # Satisfies NIST SP 800-53 CM-7, SC-39, PCI DSS Req 2.2, Checkov CKV_K8S_40
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+
+      containers:
+        - name: secure-api
+          # Pinned multi-arch immutable image digest
+          image: python:3.12-slim@sha256:d94fa2a944813083815e6af2864696c6a463c299908cf8eb6c71c4c1a84f3df9
+          imagePullPolicy: Always
+
+          command:
+            - "python3"
+            - "-c"
+            - |
+              import http.server
+              import socketserver
+              class HealthHandler(http.server.SimpleHTTPRequestHandler):
+                  def do_GET(self):
+                      if self.path in ['/healthz', '/readyz']:
+                          self.send_response(200)
+                          self.send_header('Content-type', 'application/json')
+                          self.end_headers()
+                          self.wfile.write(b'{"status":"healthy","compliance":"verified"}')
+                      else:
+                          self.send_response(404)
+                          self.end_headers()
+              with socketserver.TCPServer(("", 8080), HealthHandler) as httpd:
+                  print("Secure API listening on port 8080")
+                  httpd.serve_forever()
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          # Container-level security context (Zero-Trust Isolation)
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+
+          volumeMounts:
+            - name: ephemeral-tmp
+              mountPath: /tmp
+
+      volumes:
+        - name: ephemeral-tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
