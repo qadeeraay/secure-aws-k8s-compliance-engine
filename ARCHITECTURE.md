@@ -106,3 +106,4 @@ Every commit triggers an automated pipeline enforcing:
 2. **Deterministic Guardrail Assertions:** Python unit test suite verifying KMS rotation, S3 TLS enforcement, and container UID properties.
 3. **Static Analysis & Framework Compliance:** Checkov scanning 213 controls across NIST 800-53, ISO 27002, SOC 2, and PCI DSS.
 4. **Container & Filesystem CVE Audit:** Trivy scanning container base images and repository dependencies for high/critical vulnerabilities.
+
