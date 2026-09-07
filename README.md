@@ -1,6 +1,8 @@
 # Secure AWS & Kubernetes Multi-Standard Compliance Engine
 
 [![CI/CD Compliance Pipeline](https://github.com/qadeeraay/secure-aws-k8s-compliance-engine/actions/workflows/compliance-ci.yml/badge.svg)](https://github.com/qadeeraay/secure-aws-k8s-compliance-engine/actions/workflows/compliance-ci.yml)
+[![CodeQL Security](https://github.com/qadeeraay/secure-aws-k8s-compliance-engine/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/qadeeraay/secure-aws-k8s-compliance-engine/actions/workflows/codeql-analysis.yml)
+[![Compliance Drift Check](https://github.com/qadeeraay/secure-aws-k8s-compliance-engine/actions/workflows/daily-compliance-drift.yml/badge.svg)](https://github.com/qadeeraay/secure-aws-k8s-compliance-engine/actions/workflows/daily-compliance-drift.yml)
 [![Checkov Compliance](https://img.shields.io/badge/Checkov%20Compliance-100%25%20Passed%20(213%2F213)-success?style=flat-square&logo=prisma)](security_suite)
 [![NIST SP 800-53](https://img.shields.io/badge/NIST%20SP%20800--53-Rev%205%20Verified-blue?style=flat-square&logo=shield)](security_suite)
 [![ISO 27002:2022](https://img.shields.io/badge/ISO%2027002%3A2022-Control%20Aligned-brightgreen?style=flat-square)](security_suite)
