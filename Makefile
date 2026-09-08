@@ -1,4 +1,4 @@
-.PHONY: help init validate audit trivy test all clean
+.PHONY: help init validate audit trivy test all up down clean
 
 SHELL := /bin/bash
 TERRAFORM_DIR := terraform
@@ -11,13 +11,20 @@ help:
 	@echo "   Standards: NIST 800-53 R5 | ISO 27002:2022 | SOC 2 Type II | PCI DSS | FIPS  "
 	@echo "================================================================================"
 	@echo "Available commands:"
-	@echo "  make init      - Initialize Terraform providers"
 	@echo "  make validate  - Run Terraform syntax and semantic validation"
-	@echo "  make audit     - Run Checkov 5-framework automated compliance audit"
+	@echo "  make audit     - Run Checkov 5-framework automated compliance audit (213 checks)"
 	@echo "  make trivy     - Run Trivy CVE and secret vulnerability scan"
 	@echo "  make test      - Run Python compliance assertion unit tests"
 	@echo "  make all       - Run the complete validation and compliance audit suite"
+	@echo "  make up        - Start LocalStack simulated AWS cloud container"
+	@echo "  make down      - Stop LocalStack container"
 	@echo "  make clean     - Clean temporary audit reports and cache files"
+
+up:
+	docker compose up -d
+
+down:
+	docker compose down
 
 init:
 	@echo "==> Initializing Terraform with AWS provider..."

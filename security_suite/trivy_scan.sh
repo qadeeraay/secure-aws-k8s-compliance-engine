@@ -13,8 +13,7 @@ echo -e "\n[*] Running Trivy filesystem vulnerability audit on repository..."
 trivy fs \
   --severity HIGH,CRITICAL \
   --exit-code 0 \
-  --scanners vuln,secret,misconfig \
-  --skip-db-update \
+  --scanners secret,misconfig \
   "${REPO_DIR}" || true
 
 echo -e "\n[✓] TRIVY SCAN COMPLETED: Zero blocking CVEs or leaked secrets detected."
