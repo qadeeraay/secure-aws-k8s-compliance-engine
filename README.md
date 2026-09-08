@@ -17,7 +17,7 @@
 
 ---
 
-## Why I Built This: Codifying Enterprise Compliance into Automated Infrastructure
+## Background: The Problem with Manual Audit Season in Enterprise Cloud
 
 In regulated environments (FinTech, HealthTech, and enterprise SaaS), engineering velocity frequently grinds to a halt when infrastructure meets audit season. Security and compliance teams mandate evidence for NIST, ISO, or SOC 2 controls, while platform engineers are left wrestling with fragmented Terraform states, leaky default security group rules, and manual spreadsheets.
 
