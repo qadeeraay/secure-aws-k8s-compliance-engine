@@ -6,7 +6,6 @@ Verifies that critical compliance controls remain immutable in source code.
 
 import unittest
 import os
-import re
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TERRAFORM_DIR = os.path.join(REPO_ROOT, "terraform")
