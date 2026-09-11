@@ -63,5 +63,24 @@ class TestComplianceGuardrails(unittest.TestCase):
             content = f.read()
         self.assertRegex(content, r"default\s*=\s*365")
 
+    def test_k8s_network_policy_dual_isolation(self):
+        """Verify NIST SC-7 & PCI DSS 1.3: NetworkPolicy specifies dual Ingress/Egress isolation."""
+        np_path = os.path.join(KUBERNETES_DIR, "networkpolicy.yaml")
+        with open(np_path, "r") as f:
+            content = f.read()
+        self.assertIn("- Ingress", content)
+        self.assertIn("- Egress", content)
+        self.assertIn("tier: ingress", content)
+        self.assertIn("port: 8080", content)
+
+    def test_vpc_flow_logs_and_private_subnets(self):
+        """Verify NIST AU-12 & ISO 27002 8.20: VPC flow logs cover ALL traffic and private subnets disable public IP."""
+        vpc_path = os.path.join(TERRAFORM_DIR, "vpc.tf")
+        with open(vpc_path, "r") as f:
+            content = f.read()
+        self.assertIn('traffic_type    = "ALL"', content)
+        self.assertIn("map_public_ip_on_launch = false", content)
+
+
 if __name__ == "__main__":
     unittest.main()
